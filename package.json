@@ -1,22 +1,25 @@
 {
-  "name": "ii-proj",
-  "version": "0.1.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pkosiniak/II-proj.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pkosiniak/II-proj/issues"
-  },
-  "homepage": "https://github.com/pkosiniak/II-proj#readme",
-  "dependencies": {
-    "express": "^4.16.4"
-  }
+   "name": "ii-proj",
+   "version": "0.1.0",
+   "description": "",
+   "main": "server.js",
+   "scripts": {
+      "start": "node server.js",
+      "test": "jest",
+      "test:watch": "jest --watch"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/pkosiniak/II-proj.git"
+   },
+   "author": "",
+   "license": "MIT",
+   "bugs": {
+      "url": "https://github.com/pkosiniak/II-proj/issues"
+   },
+   "homepage": "https://github.com/pkosiniak/II-proj#readme",
+   "dependencies": {
+      "express": "^4.16.4",
+      "jest": "^23.6.0"
+   }
 }
