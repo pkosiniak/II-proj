@@ -1,6 +1,8 @@
 import express from 'express';
-import transactionsRouter from './transactionsRoutes'
-import billsRouter from './billsRouter';
+import transactionsRouter from './Transactions/transactionsRoutes';
+import billsRouter from './Bills/billsRouter';
+import clientRouter from './Clients/clientRouter'
+
 
 const app = express();
 
@@ -10,6 +12,7 @@ const app = express();
 
 app.use('/transactions', transactionsRouter);
 app.use('/bills', billsRouter);
+app.use('/clients', clientRouter);
 
 
 // app.get('/', rootDirController);

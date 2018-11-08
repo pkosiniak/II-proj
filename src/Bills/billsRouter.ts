@@ -12,29 +12,29 @@ bills.get('/', (req, res) => {
 // addBill
 bills.post('/', (req, res) => {
 	if (!req.body) {
-		res.send(400);
+		res.sendStatus(400);
 	}
 	// createBillLogic
-	res.send(201);
+	res.sendStatus(201);
 });
 
 // getBillById
 bills.get('/:id', (req, res) => {
 	if (!isUUID(req.params.id)) {
-		res.send(400);
+		res.sendStatus(400);
 	}
 	// getBillByIdFromDB
 	res.json({ field: 'target' });
-	res.send(200);
+	res.sendStatus(200);
 });
 
 // closeBillById
 bills.post('/:id', (req, res) => {
 	if (!isUUID(req.params.id)) {
-		res.send(400);
+		res.sendStatus(400);
 	}
 	// closingBillsLogic
-	res.send(201);
+	res.sendStatus(201);
 });
 
 export default bills;

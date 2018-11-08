@@ -37,11 +37,11 @@
          ../Clients              # Chce przejśc do listy klientów
       ->response false     # Jeśli się nie zalogowałem to
          ./login                 # Chcę zostac i spróbowac jeszcze raz
-
+|
    /Clients    # Chcę zobaczyć liste klientów
       ->addClient     # Chcę dodać klienta
       /{id}          # Chcę wybrać klienta
-         ->deleteClient        # Chcę usunąć klienta
+         ?->deleteClient        # Chcę usunąć klienta
          ?->readClientData      # Chcę zobaczyć dane klienta
             ?/contactsdata
          ->upadteClientData    # Chcę zaktualizować dane klienta
@@ -58,10 +58,9 @@
       ->addBill   # Chcę dodać nowy rachunek
          ./{id}    // Przejdz do nowo utworzonego rachunku
 
-      ~->readOpened     # Chcę zobaczyć otwarte rachunki ?
+      ~->readOpened     # Chcę zobaczyć otwarte rachunki ?sort=open
 
       /{id}       # Chcę zobaczyć konkretny rachunek
-
          /Transactions     # Chcę zobaczyć listę transakji
             /{id}
                ->createTransaction     # Chcę dodać nową transakcje
@@ -76,8 +75,30 @@
          ->closeBill       # Chcę zamknąć rachunek
             ./{id}/->createTransaction      // Przejdz do i dodaj transakcje na kwotę (-)salda rachunku
 
-      ~->closed     # Chcę zobaczyć zamknięte rachunki?
+      ~->closed     # Chcę zobaczyć zamknięte rachunki ?sort=open
 
+|
+|
+/app
 
+   /Clients
+      ->GET       // getClients
+      ->POST      // addClient
+      /{id}
+         ->GET    // getBills
+         ->PUT    // upadteClientData
+         ->PATCH  // deleteClient
 
+   /Bills
+      ->GET       // getAllBills
+      ->POST      // addBill
+      /{id}
+         ->GET    // getBillById
+         ->POST   // closeBillById
 
+   /Transactions
+      ->GET       // getAllTransactions
+      /{id}
+         ->GET    // getTransactionsById
+         ->PUT    // addNewTransaction
+         ->PATCH  // redrawTransaction
