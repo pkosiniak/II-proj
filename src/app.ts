@@ -1,5 +1,6 @@
 import express from 'express';
 import transactionsRouter from './transactionsRoutes'
+import billsRouter from './billsRouter';
 
 const app = express();
 
@@ -8,6 +9,7 @@ const app = express();
 // }
 
 app.use('/transactions', transactionsRouter);
+app.use('/bills', billsRouter);
 
 
 // app.get('/', rootDirController);
