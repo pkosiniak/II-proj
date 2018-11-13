@@ -1,49 +1,65 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { isUUID } from 'validator';
+import * as client from './clientController';
+//@ts-ignore
+import a from 'passport';
 
-const client = Router();
+// import { getAll as getAllBills } from '~/Bills/billsController'
 
-client.get('/', (req, res) => {
-	// getClients
-	res.json({ field: 'client' });
-});
+const router = Router();
+const authUser = (req: Request, res: Response, next: NextFunction) => {
+	// if(req.user.id !== req.params.userId)
+	// 	res.sendStatus(403);
+	next();
+}
 
-client.post('/', (req, res) => {
-	if (!req.body) {
-		res.sendStatus(400);
-	}
-	// addClient
-	res.sendStatus(200);
-})
+router.get('/', client.getAll);
 
-client.get('/:id', (req, res) => {
-	if (!isUUID(req.params.id)) {
-		res.sendStatus(400);
-	}
-	// getBillByIdFromDB
-	res.json({ field: 'target' });
-	res.sendStatus(200);
-})
+router.post('/', client.add)
 
-client.put('/:id', (req, res) => {
-	if (!isUUID(req.params.id)) {
-		res.sendStatus(400);
-	}
+router.get('/:userId', client.getByID)
 
-	// addClient
-	res.sendStatus(200);
-})
+// // podobne do /bills?userId=:userId
+// client.get('/:userId/bills', authUser,
+// 	(req, res, next) => {
+// 		req.query.userId = req.params.userId;
+// 		next();
+// 	},
+// 	getAllBills)
 
-client.patch('/:id', (req, res) => {
-	if (!isUUID(req.params.id)) {
-		res.sendStatus(400);
-	}
+// podobne do /bills?userId=:userId
 
-	// addClient
-	res.sendStatus(200);
-})
+router.get('/:userId/bills', authUser,
+	(req, res) => {
+		if (!isUUID(req.params.userId)) {
+			res.sendStatus(400);
+		}
+		// getBillsFromDB({userId: req.params.userId})
+		// getBillsFromDBbyUserId(req.params.userId)
+		res.json({ field: 'target' });
+		res.sendStatus(200);
+	})
+
+// client.get('/:userId/bills/:billId', authUser,
+// 	(req, res) => {
+
+// 	})
+
+// client.get('/:userId/bills/:billId/transactions', authUser,
+// 	(req, res) => {
+
+// 	})
+
+// client.get('/:userId/bills/:billId/transactions/:transactionId', authUser,
+// 	(req, res) => {
+
+// 	})
+
+router.put('/:id', client.putById)
+
+router.patch('/:id', client.patchByID)
 
 
 
 
-export default client;
+export default router;

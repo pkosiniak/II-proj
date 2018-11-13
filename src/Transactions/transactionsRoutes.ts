@@ -1,37 +1,11 @@
 import { Router } from 'express';
-import { isUUID } from 'validator';
+import * as transactions from './transactionsController';
 
-const transactions = Router();
-transactions.get('/', (req, res) => {
-   // pobrac dane z bazy
-   // na podstawie jakichś parametrow
-   // zwrocic do uzytkownika
-   // getAllTransactions
-   res.json({ field: 3 });
-});
+const router = Router();
 
-transactions.put('/:id', (req, res) => {
-   if (!isUUID(req.params.id)) {
-      res.sendStatus(400);
-   }
-   // addNewTransaction
-   res.sendStatus(201);
-});
+router.get('/', transactions.getAll);
+router.put('/:id', transactions.addNew);
+router.get('/:id', transactions.getById);
+router.patch('/:id', transactions.redraw);
 
-transactions.get('/:id', (req, res) => {
-   if (!isUUID(req.params.id)) {
-      res.sendStatus(400);
-   }
-   // getTransactionsById
-   res.sendStatus(200);
-});
-
-transactions.patch('/:id', (req, res) => {
-   if (!isUUID(req.params.id)) {
-      res.sendStatus(400);
-   }
-   // redrawTransaction
-   res.sendStatus(200);
-});
-
-export default transactions;
+export default router;

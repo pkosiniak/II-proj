@@ -1,40 +1,17 @@
 import { Router } from 'express';
-import { isUUID } from 'validator';
-
-const bills = Router();
+import * as bills from './billsController'
+const router = Router();
 
 // getAllBills
-bills.get('/', (req, res) => {
-	//getBillsFromDB
-	res.json({ field: 'history' });
-});
+router.get('/', bills.getAll);
 
 // addBill
-bills.post('/', (req, res) => {
-	if (!req.body) {
-		res.sendStatus(400);
-	}
-	// createBillLogic
-	res.sendStatus(201);
-});
+router.post('/', bills.add);
 
 // getBillById
-bills.get('/:id', (req, res) => {
-	if (!isUUID(req.params.id)) {
-		res.sendStatus(400);
-	}
-	// getBillByIdFromDB
-	res.json({ field: 'target' });
-	res.sendStatus(200);
-});
+router.get('/:id', bills.getByID);
 
 // closeBillById
-bills.post('/:id', (req, res) => {
-	if (!isUUID(req.params.id)) {
-		res.sendStatus(400);
-	}
-	// closingBillsLogic
-	res.sendStatus(201);
-});
+router.post('/:id', bills.closeById);
 
-export default bills;
+export default router;
