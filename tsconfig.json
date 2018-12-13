@@ -3,8 +3,10 @@
        // ===== development
        "sourceMap": true,
        // ===== language features
-       "moduleResolution": "node",
-       "experimentalDecorators": true,
+		 "moduleResolution": "node",
+		 "experimentalDecorators": true,
+		 "emitDecoratorMetadata": true,
+		 "resolveJsonModule": true,
        // ===== transpiling
        "target": "es6",
        "importHelpers": true,
@@ -13,7 +15,7 @@
        "esModuleInterop": true,
        "allowJs": true,
        // ===== typechecking
-       "noUnusedLocals": true,
+       // "noUnusedLocals": true,
        // "noUnusedParameters": true,
        "allowSyntheticDefaultImports": true,
        "noImplicitAny": true,
@@ -32,8 +34,9 @@
        "types": [
           "node",
           "jest"
-       ],
-       // ===== project settings
+		 ],
+		 "typeRoots": ["./node_modules/@types", "./types"],
+		 // ===== project settings
        "rootDir": "./",
        "baseUrl": "./src",
        "paths": {

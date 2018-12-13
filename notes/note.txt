@@ -95,6 +95,8 @@
       /{id}
          ->GET    // getBillById
          ->POST   // closeBillById
+         ->PATCH	// RedrawCloseBillById
+
 
    /Transactions
       ->GET       // getAllTransactions
@@ -102,3 +104,5 @@
          ->GET    // getTransactionsById
          ->PUT    // addNewTransaction
          ->PATCH  // redrawTransaction
+
+

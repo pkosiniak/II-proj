@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { isUUID } from 'validator';
-import * as client from './clientController';
+import * as client from './client.Controller';
 //@ts-ignore
 import a from 'passport';
 
@@ -55,9 +55,9 @@ router.get('/:userId/bills', authUser,
 
 // 	})
 
-router.put('/:id', client.putById)
+router.put('/:id', client.updateById)
 
-router.patch('/:id', client.patchByID)
+router.patch('/:id', client.anonimizeByID)
 
 
 

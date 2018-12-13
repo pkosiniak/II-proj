@@ -7,8 +7,12 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\server.js"
+				"name": "Launch Program",
+				"cwd": "${workspaceFolder}",
+				"sourceMaps": true,
+				"runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+				"args": ["${workspaceFolder}/src/server.ts"],
+				"protocol": "inspector"
         }
     ]
 }

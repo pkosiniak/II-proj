@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as bills from './billsController'
+import * as bills from './bills.Controller'
 const router = Router();
 
 // getAllBills
