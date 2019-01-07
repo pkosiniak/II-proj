@@ -1,65 +1,24 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import { isUUID } from 'validator';
+import { Router } from 'express';
 import * as client from './client.Controller';
 //@ts-ignore
-import a from 'passport';
+import roles from '../security/Roles';
+import { clientRole, adminRole } from '../security/Secret.Security';
 
-// import { getAll as getAllBills } from '~/Bills/billsController'
 
 const router = Router();
-const authUser = (req: Request, res: Response, next: NextFunction) => {
-	// if(req.user.id !== req.params.userId)
-	// 	res.sendStatus(403);
-	next();
-}
 
-router.get('/', client.getAll);
+router.get('/', roles.is(adminRole), client.getAll);
 
-router.post('/', client.add)
+router.post('/', roles.is(adminRole), client.add)
 
-router.get('/:userId', client.getByID)
+router.get('/:userId', roles.is(clientRole), client.getByID)
 
-// // podobne do /bills?userId=:userId
-// client.get('/:userId/bills', authUser,
-// 	(req, res, next) => {
-// 		req.query.userId = req.params.userId;
-// 		next();
-// 	},
-// 	getAllBills)
+router.put('/:userId', roles.is(adminRole), client.updateById)
 
-// podobne do /bills?userId=:userId
+router.post('/:userId', roles.is(adminRole), client.anonimizeByID)
 
-router.get('/:userId/bills', authUser,
-	(req, res) => {
-		if (!isUUID(req.params.userId)) {
-			res.sendStatus(400);
-		}
-		// getBillsFromDB({userId: req.params.userId})
-		// getBillsFromDBbyUserId(req.params.userId)
-		res.json({ field: 'target' });
-		res.sendStatus(200);
-	})
+router.get('/:userId/bills', roles.is(clientRole), client.getByIdBills)
 
-// client.get('/:userId/bills/:billId', authUser,
-// 	(req, res) => {
-
-// 	})
-
-// client.get('/:userId/bills/:billId/transactions', authUser,
-// 	(req, res) => {
-
-// 	})
-
-// client.get('/:userId/bills/:billId/transactions/:transactionId', authUser,
-// 	(req, res) => {
-
-// 	})
-
-router.put('/:id', client.updateById)
-
-router.patch('/:id', client.anonimizeByID)
-
-
-
+router.get('/:userId/bills/:billId', roles.is(clientRole), client.getByIdOneBill)
 
 export default router;

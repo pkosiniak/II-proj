@@ -43,7 +43,7 @@ const getClientById = {
 
 const updateClientDataByIdRequest = {
 	"Clients/id": {
-		"id": "string",
+		// "id": "string",
 		"name": "string",
 	}
 }
@@ -66,7 +66,7 @@ const updateClientDataByIdResponse = {
 
 const deleteClientDataByIdRequest = {
 	"Clients/id": {
-		"id": "string",
+		// "id": "string",
 	}
 }
 

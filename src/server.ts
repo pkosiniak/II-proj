@@ -1,4 +1,3 @@
-// import app from "./app";
 import "reflect-metadata";
 import { createConnection } from 'typeorm';
 import ormConfig from '../ormconfig'

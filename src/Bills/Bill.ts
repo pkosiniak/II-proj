@@ -22,8 +22,6 @@ export class Bill {
 
 	@OneToMany(type => Transaction, transaction => transaction.bill, { nullable: true })
 	transactions?: Transaction[];
-
-
 }
 
 // export default new Bill();b
