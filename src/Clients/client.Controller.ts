@@ -68,22 +68,13 @@ export const getByIdBills = async (req: Request, res: Response) => {
 	res.json(model);
 }
 
-// export const addByIdNewBill = async (req: Request, res: Response) => {
-// 	if (!isUUID(req.params.userId)) {
-// 		res.sendStatus(400);
-// 		return;
-// 	}
-
-// }
-
-
 // client.ById.Bills.ById.get(clientBill.ById)
 export const getByIdOneBill = async (req: Request, res: Response) => {
 	if (!isUUID(req.params.userId) || !isUUID(req.params.billId)) {
 		res.sendStatus(400);
 		return;
 	}
-	const model = await getRepository(Bill).findOne(req.params.bill_id, { relations: ['transactions'] });
+	const model = await getRepository(Bill).findOne(req.params.billId, { relations: ['transactions'] });
 	res.json(model);
 }
 

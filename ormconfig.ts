@@ -1,12 +1,13 @@
 import { ConnectionOptions } from 'typeorm/connection/ConnectionOptions';
+import { username, password, dbName } from '~/security/Secret.Security';
 
 const ormConfig: ConnectionOptions = {
 	type: "postgres",
 	host: "localhost",
 	port: 5432,
-	username: "postgres",
-	password: "Dupad12#",
-	database: "qTest",
+	username: username,
+	password: password,
+	database: dbName,
 	synchronize: true,
 	logging: false,
 	entities: [

@@ -1,53 +1,75 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import * as client from './client.Controller';
-import { add as billAdd } from '../Bills/bills.Controller'
+import { add as addBill, updateById as updateBill } from '../Bills/bills.Controller'
+import { addBody as addTransaction } from '../Transactions/transactions.Controller'
 //@ts-ignore
 import roles from '../security/Roles';
 import { clientRole, adminRole } from '../security/Secret.Security';
 
 
+export const unSafeRouter = Router();
 const router = Router();
 
 const addBillMiddleware = (fn: any) =>
 	(req: Request, res: Response, next: NextFunction) => {
 		req.body = { client: req.params.userId };
-		fn(req,res,next);
+		fn(req, res, next);
 	}
 
+const addTransactionMiddleware = (fn: any) =>
+	async (req: Request, res: Response, next: NextFunction) => {
+		req.body.bill = req.params.billId;
+		const result = await addTransaction(req, res, next);
+		result ? fn(req, res) :
+		res.sendStatus(400);
 
-// router.get('/', roles.is(adminRole), client.getAll);
+	}
 
-// router.post('/', roles.is(adminRole), client.add)
+// client.get(all)
+router.get('/', roles.is(adminRole), client.getAll);
 
-// router.get('/:userId', roles.is(clientRole), client.getByID)
+// client.post(new)
+router.post('/', roles.is(adminRole), client.add)
 
-// router.put('/:userId', roles.is(adminRole), client.updateById)
+// client.ById.get(one)
+router.get('/:userId', roles.is(clientRole), client.getByID)
 
-// router.post('/:userId', roles.is(adminRole), client.anonimizeByID)
+// client.ById.put(update)
+router.put('/:userId', roles.is(adminRole), client.updateById)
 
-// router.get('/:userId/bills', roles.is(clientRole), client.getByIdBills)
+// client.ById.post(anonimize)
+router.post('/:userId', roles.is(adminRole), client.anonimizeByID)
 
-// router.post('/:userId/bills', roles.is(adminRole), billAdd)
+// client.ById.Bills.get(clientBills)
+router.get('/:userId/bills', roles.is(clientRole), client.getByIdBills)
 
-// router.get('/:userId/bills/:billId', roles.is(clientRole), client.getByIdOneBill)
+// client.ById.Bills.post(newBillToClient)
+router.post('/:userId/bills', roles.is(adminRole), addBillMiddleware(addBill))
 
+// client.ById.Bills.ById.get(clientBills)
+router.get('/:userId/bills/:billId', roles.is(clientRole), client.getByIdOneBill)
+
+// client.ById.Bills.ById.post(newTrasactionToBillToClient)
+router.post('/:userId/bills/:billId', roles.is(adminRole), addTransactionMiddleware(updateBill))
+
+// UNSAFE MODE
 // test without login:
-router.get('/', client.getAll);
+unSafeRouter.get('/', client.getAll);
 
-router.post('/', client.add)
+unSafeRouter.post('/', client.add)
 
-router.get('/:userId', client.getByID)
+unSafeRouter.get('/:userId', client.getByID)
 
-router.put('/:userId', client.updateById)
+unSafeRouter.put('/:userId', client.updateById)
 
-router.post('/:userId', client.anonimizeByID)
+unSafeRouter.post('/:userId', client.anonimizeByID)
 
-router.get('/:userId/bills', client.getByIdBills)
+unSafeRouter.get('/:userId/bills', client.getByIdBills)
 
-router.post('/:userId/bills', addBillMiddleware(billAdd))
+unSafeRouter.post('/:userId/bills', addBillMiddleware(addBill))
 
-router.get('/:userId/bills/:billId', client.getByIdOneBill)
+unSafeRouter.get('/:userId/bills/:billId', client.getByIdOneBill)
 
-// router.get('/:userId/bills/:billId/transaction', client.getByIdOneBill)
+unSafeRouter.post('/:userId/bills/:billId', addTransactionMiddleware(updateBill))
 
 export default router;

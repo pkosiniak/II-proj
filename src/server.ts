@@ -6,6 +6,6 @@ createConnection(
 	ormConfig
 ).then(async connection => {
 	const app = require('./app').default;
-	app.listen(3000, () => console.log('App started'));
+	app.listen(3000, () => console.log('App started at http://localhost:3000/'));
 }).catch(error => console.log(error));
 

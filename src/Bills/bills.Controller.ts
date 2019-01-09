@@ -8,8 +8,12 @@ const billRepository = getRepository(Bill);
 
 // bills.get(all) -> READ
 export const getAll = async (req: Request, res: Response) => {
+
+	let closed = req.query.closed ? req.query.closed === 'true' ? true : false : false;
+
 	const model = await billRepository.find({
-		loadRelationIds: { relations: ['client'] }
+		loadRelationIds: { relations: ['client'] },
+		where: { isClosed: closed }
 	});
 	res.json(model);
 }
@@ -31,7 +35,7 @@ export const getByID = async (req: Request, res: Response) => {
 		return;
 	}
 	// getBillByIdFromDB
-	const model = await billRepository.findOne(req.params.billId, { loadRelationIds: {relations: ['client', 'transactions']} });
+	const model = await billRepository.findOne(req.params.billId, { loadRelationIds: { relations: ['client', 'transactions'] } });
 	res.json(model);
 };
 
@@ -54,21 +58,22 @@ export const closeById = (req: Request, res: Response) => {
 };
 
 // bills.ById.post(close) -> UPDATE
-export const updateById = (req: Request, res: Response) => {
-	if (!isUUID(req.params.billId) || !req.body || !req.body.client) {
+export const updateById = async (req: Request, res: Response) => {
+	if (!isUUID(req.params.billId) || !req.body) {
 		res.sendStatus(400);
 		return;
 	}
-
-	const model = billRepository.findOne(req.params.billId).then((result) => {
-		return !result || result.client ? undefined : result
-	});
+	const model = await billRepository.findOne(req.params.billId)
 	if (!model) {
 		res.sendStatus(400);
 		return;
 	}
 
-	billRepository.update(req.params.billId, { client: req.body.client });
+	if (req.body.client)
+		billRepository.update(req.params.billId, { client: req.body.client });
+	if (req.body.amount) {
+		billRepository.update(req.params.billId, { state: model.state - req.body.amount });
+	}
 	res.sendStatus(200);
 };
 
@@ -87,5 +92,4 @@ export const deleteById = (req: Request, res: Response) => {
 	billRepository.delete(req.params.billId)
 	res.sendStatus(200);
 }
-
 
