@@ -8,11 +8,14 @@ export class Bill {
 	@PrimaryGeneratedColumn("uuid")
 	id: string;
 
-	@Column()
+	@Column({ default: new Date(Date.now()), readonly: true })
 	beginDate: Date;
 
 	@Column({ nullable: true })
 	endDate?: Date;
+
+	@Column({ default: false })
+	isClosed: boolean;
 
 	@ManyToOne(type => Client, client => client.bills, { nullable: true })
 	client?: Client;

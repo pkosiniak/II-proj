@@ -12,9 +12,13 @@ const asyncMiddleware = (fn: any, str: string) =>
 		});
 	};
 
+// transactions.get(all)
 router.get('/', asyncMiddleware(transactions.getAll, "non-critical error from transactions.getAll"));
-router.put('/:id', transactions.addNew);
-router.get('/:id', transactions.getById);
-router.patch('/:id', transactions.redraw);
+// transactions.put(new)
+router.put('/', transactions.addNew);
+// transactions.ById.get(one)
+router.get('/:transactionId', transactions.getById);
+// transactions.ById.post(update)
+router.patch('/:transactionId', transactions.redraw);
 
 export default router;

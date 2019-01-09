@@ -57,6 +57,9 @@ typings/
 # dotenv environment variables file
 .env
 
-#security files
+# security files
 *.Security.*
 
+# notes dierctory
+notes/
+*.note.*

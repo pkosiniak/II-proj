@@ -7,8 +7,6 @@ const ConnectRoles = require('connect-roles');
 const roles = new ConnectRoles({ async: true });
 
 roles.use(clientRole, async (req: Request & { user?: any }) => {
-	// req.params.userId
-	// find w bazie clienta po userId
 	const client = await getRepository(Client).findOne(req.params.userId)
 	return client && req.user && client.oAuthId === req.user.id ? true : undefined;
 });

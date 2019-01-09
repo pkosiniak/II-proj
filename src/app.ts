@@ -5,7 +5,8 @@ import clientRouter from './Clients/client.Routes'
 import sessions from 'express-session'
 import passportAuth from './security/PassportAuth';
 import roles from './security/Roles';
-import { secret, adminRole } from './security/Secret.Security';
+import { secret, adminRole, clientRole } from './security/Secret.Security';
+import bodyParser from 'body-parser';
 
 
 const app = express();
@@ -24,24 +25,59 @@ app.get('/login', passportAuth.loginFunction, (req, res) => {
 });
 
 app.use(roles.middleware());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 // only for admin
-app.use('/transactions', roles.is(adminRole), transactionsRouter);
+// app.use('/transactions', roles.is(adminRole), transactionsRouter);
+app.use('/transactions', transactionsRouter);
+
 // only for admin
 app.use('/bills', billsRouter);
 
 app.use('/clients', clientRouter);
 
 app.get('/', (req, res) => {
-	res.send({ clients: '/clients', bills: '/bills', transactions: '/transactions' });
+	res.send({
+		'Possible paths': {
+			login: '/login',
+			clients: '/clients',
+			clientBiId: {
+				byId: '/clients/{client_id}',
+				bills: '/clients/{client_id}/bills',
+				billById: '/clients/{client_id}/bills/{bill_id}'
+			},
+			bills: '/bills',
+			billById: '/bills/{bill_id}',
+			transactions: '/transactions',
+			transactionById: '/transactions/{transaction_id}'
+		},
+		'Can access': {
+			'Everyone': ['/login', '/test'],
+			'Client': ['/clients/{client_id}', '/clients/{client_id}/bills', '/clients/{client_id}/bills/{bill_id}', '/testC'],
+			'Admin': ['{everywere}', '/testA']
+		}
+	});
 })
 
 app.get('/test', (req, res) => {
-	res.send('dzien dobry');
+	res.send({ 'Dzien Dobry!': 'Chyba', 'Zaloguj się': '/login' });
 });
 
-app.get('/test1', roles.is(adminRole), (req, res) => {
-	res.send('admin can only access')
+app.get('/testC', roles.is(clientRole), (req, res) => {
+	res.send({ 'Hello for our Client!': 'Unless you\'re an Admin', 'Client': ' can access this page' })
+});
+
+app.get('/testA', roles.is(adminRole), (req, res) => {
+	res.send({ 'Only Admin': 'can access this page', 'You can be anywere': 'Why here?' })
+});
+
+app.post('/', (req, res) => {
+	res.send(req.body ? { 'body': 'true' } : { 'body': 'false' });
+});
+app.put('/', (req, res) => {
+	res.send(req.body ? { 'body': 'true' } : { 'body': 'false' });
 });
 
 export default app;

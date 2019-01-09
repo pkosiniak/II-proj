@@ -13,12 +13,14 @@ export class Transaction {
 	@Column()
 	amount: number;
 
-	@Column()
+	@Column({default:new Date(Date.now())})
 	date: Date;
+
+	@Column({ default: false })
+	isWithdrawn: boolean;
 
 	// product?: string;
 	// product: Product;
-
 }
 
 // export default new Transaction()id
